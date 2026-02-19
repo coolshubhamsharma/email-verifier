@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Verification Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    input {
+      padding: 10px;
+      width: 70%;
+    }
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Email Verification Tool</h2>
+
+  <input type="text" id="emailInput" placeholder="Enter email address" />
+  <button onclick="verifyEmail()">Verify</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function verifyEmail() {
+      const email = document.getElementById("emailInput").value;
+
+      const response = await fetch("/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      document.getElementById("result").textContent =
+        JSON.stringify(data, null, 2);
+    }
+  </script>
+
+</body>
+</html>

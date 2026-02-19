@@ -1,22 +1,17 @@
 const express = require("express");
+const path = require("path");
 const verifyEmail = require("./verifyEmail");
 
 const app = express();
 app.use(express.json());
 
-// Root route
-app.get("/", (req, res) => {
-  res.json({
-    message: "Email Verification API is running"
-  });
-});
+// Serve static frontend
+app.use(express.static(path.join(__dirname, "public")));
 
-// Health check
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// Verification endpoint
 app.post("/verify", async (req, res) => {
   try {
     const { email } = req.body;
@@ -28,10 +23,10 @@ app.post("/verify", async (req, res) => {
     }
 
     const result = await verifyEmail(email);
-    return res.json(result);
+    res.json(result);
 
   } catch (err) {
-    return res.status(500).json({
+    res.status(500).json({
       error: "internal_server_error",
       message: err.message
     });
