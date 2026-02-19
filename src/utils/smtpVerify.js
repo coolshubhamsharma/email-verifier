@@ -35,7 +35,7 @@ async function verifyMailbox(mxHost, email) {
       }
 
       connection.mail(
-        { from: "verify@test.com" },
+        { from: `verify@${mxHost}` },
         (err) => {
           if (err) {
             return safeResolve({
@@ -79,11 +79,11 @@ async function verifyMailbox(mxHost, email) {
               }
 
               return safeResolve({
-                status: "unknown",
-                subresult: "smtp_error",
-                smtpCode: code || null,
-                error: err.message
-              });
+              status: "unknown",
+              subresult: "connection_error",
+              smtpCode: code || null,
+              error: err.message
+            });
             }
           );
         }
